@@ -2,7 +2,7 @@
 #
 module QueryFilter
   class Base
-    TRUE_ARRAY = %w[1].freeze
+    TRUE_ARRAY = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
     class_attribute :filters
 
