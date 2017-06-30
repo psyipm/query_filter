@@ -2,6 +2,7 @@
 
 [![Build Status](https://semaphoreci.com/api/v1/igormalinovskiy/query_filter/branches/master/shields_badge.svg)](https://semaphoreci.com/igormalinovskiy/query_filter)
 [![Code Climate](https://codeclimate.com/github/psyipm/query_filter/badges/gpa.svg)](https://codeclimate.com/github/psyipm/query_filter)
+[![Gem Version](https://badge.fury.io/rb/query_filter.svg)](https://badge.fury.io/rb/query_filter)
 
 This gem provides DSL to write custom complex filters for ActiveRecord models. It automatically parses whitelisted params and adds filters to query.
 

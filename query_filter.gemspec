@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'ActiveRecord query filter gem'
   spec.description   = 'This gem provides DSL to write custom complex filters for ActiveRecord models'
-  spec.homepage      = 'http://rubygems.org/gems/query_filter'
+  spec.homepage      = 'https://github.com/psyipm/query_filter'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
