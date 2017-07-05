@@ -29,11 +29,11 @@ module QueryFilter
     end
 
     def self.range(*args)
-      filter(RangeFilter, *args)
+      filter(Rules::Range, *args)
     end
 
     def self.date_range(*args)
-      filter(DateRangeFilter, *args)
+      filter(Rules::DateRange, *args)
     end
 
     def self.splitter_range(*args)
@@ -41,7 +41,7 @@ module QueryFilter
     end
 
     def self.order_by(*args)
-      filter(OrderByFilter, *args)
+      filter(Rules::OrderBy, *args)
     end
 
     def self.filter(class_name, *args)

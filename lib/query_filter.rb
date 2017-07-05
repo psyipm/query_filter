@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'query_filter/version'
+require 'active_support/time'
+require 'active_support/core_ext/class'
 
 module QueryFilter
   autoload :Base, 'query_filter/base'
