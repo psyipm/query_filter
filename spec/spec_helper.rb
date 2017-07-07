@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'query_filter'
 require 'active_support/time'
 require 'active_support/core_ext/class'
+require 'query_filter_mocks'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

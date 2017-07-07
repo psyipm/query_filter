@@ -9,7 +9,7 @@ module QueryFilter::Rules
     end
 
     def valid?(params)
-      params[key].present? && DIRECTIONS.include?(params[direction_key])
+      params[key].present? && DIRECTIONS.include?(params[direction_key].try(:downcase))
     end
 
     def direction_key

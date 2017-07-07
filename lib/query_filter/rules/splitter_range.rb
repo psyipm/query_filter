@@ -12,7 +12,7 @@ module QueryFilter::Rules
       end
 
       def range
-        Range.new(*items)
+        ::Range.new(*items)
       end
 
       def items
@@ -21,7 +21,7 @@ module QueryFilter::Rules
     end
 
     def name
-      'spliter_range'.freeze
+      'splitter_range'.freeze
     end
 
     def valid?(values)

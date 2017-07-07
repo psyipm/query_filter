@@ -3,6 +3,7 @@
 require 'query_filter/version'
 require 'active_support/time'
 require 'active_support/core_ext/class'
+require 'active_support/core_ext/object/try'
 
 module QueryFilter
   autoload :Base, 'query_filter/base'
