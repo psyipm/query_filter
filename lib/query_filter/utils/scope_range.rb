@@ -31,11 +31,11 @@ module QueryFilter::Utils
     end
 
     def query(column)
-      if value_from && value_to
+      if value_from.present? && value_to.present?
         ["#{column} BETWEEN ? AND ?", value_from, value_to]
-      elsif value_from
+      elsif value_from.present?
         ["#{column} >= ?", value_from]
-      elsif value_to
+      elsif value_to.present?
         ["#{column} <= ?", value_to]
       end
     end

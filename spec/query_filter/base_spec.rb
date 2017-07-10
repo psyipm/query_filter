@@ -28,12 +28,12 @@ RSpec.describe QueryFilter::Base do
   end
 
   it 'should build range filter with \'from\' param' do
-    params = { login_count_from: 4}
+    params = { login_count_from: 4, login_count_to: '' }
     expect(query(params)).to match(/login_count >= [\d+]/)
   end
 
   it 'should build range filter with \'to\' param' do
-    params = { login_count_to: 14}
+    params = { login_count_from: '', login_count_to: 14 }
     expect(query(params)).to match(/login_count <= [\d+]/)
   end
 
