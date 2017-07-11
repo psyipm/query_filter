@@ -119,6 +119,7 @@ class OrderFilter < QueryFilter::Base
   # can be restricted using array of values
   scope :state, only: [:pending, :completed]
   scope :deleted, only: TRUE_ARRAY
+  scope :archived, if: :allow_archived?
 
   range :price
 
@@ -136,6 +137,10 @@ class OrderFilter < QueryFilter::Base
 
   def scope_deleted(_value)
     query.where(deleted: true)
+  end
+
+  def scope_archived(_)
+    query.where(archived: true)
   end
 
   # Filter will be applied when following params present
@@ -158,6 +163,12 @@ class OrderFilter < QueryFilter::Base
 
   def order_by_sort_column(column, direction)
     query.reorder("orders.#{column} #{direction} NULLS LAST")
+  end
+
+  protected
+
+  def allow_archived?
+    @params[:old] == '1' || params[:state] == 'archived'
   end
 end
 ```

@@ -6,7 +6,7 @@ module QueryFilter
 
     class_attribute :filters
 
-    attr_reader :query
+    attr_reader :query, :params
 
     def initialize(scope, params)
       @query = scope
@@ -55,7 +55,7 @@ module QueryFilter
 
     def active_filters
       self.class.filters.each do |filter|
-        yield filter, filter.normalize_params(@params) if filter.valid?(@params)
+        yield filter, filter.normalize_params(@params) if filter.can_apply?(self)
       end
     end
   end
