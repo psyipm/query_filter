@@ -5,8 +5,14 @@ class UserFilter < QueryFilter::Base
   splitter_range :failed_attempts
   order_by :sort_column, via: :sort_mode
 
+  scope :first_name, if: :allow_first_name?
+
   def scope_name(value)
     query.where(name: value)
+  end
+
+  def scope_first_name(_)
+    query.where(first_name: 'admin')
   end
 
   def date_range_created_at(period)
@@ -23,5 +29,11 @@ class UserFilter < QueryFilter::Base
 
   def order_by_sort_column(column, direction)
     query.reorder("users.#{column} #{direction}")
+  end
+
+  protected
+
+  def allow_first_name?
+    @params[:fn] == 'test'
   end
 end

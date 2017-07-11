@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe QueryFilter::Base do
-  let(:user) { User.new(name: 'test_user', login_count: 10, failed_attempts: 5 ) }
+  let(:user) { User.new(name: 'test_user', login_count: 10, failed_attempts: 5) }
   let(:date_range) { [1.day.ago, 1.day.from_now].map { |d| d.strftime('%m/%d/%Y') }.join(' to ') }
 
   before(:each) do
@@ -15,6 +15,16 @@ RSpec.describe QueryFilter::Base do
   it 'should build scope filter' do
     params = { name: 'test_user' }
     expect(query(params)).to match(/name[\\\"]+ = 'test_user'/)
+  end
+
+  it 'should build scope first_name filter' do
+    params = { fn: 'test' }
+    expect(query(params)).to match(/name[\\\"]+ = 'admin'/)
+  end
+
+  it 'should not build scope first_name filter if conditition false' do
+    params = { first_name: 'test' }
+    expect(query(params)).not_to match(/name/)
   end
 
   it 'should build date range filter' do

@@ -19,5 +19,6 @@ module QueryFilter
   module Utils
     autoload :DatePeriod, 'query_filter/utils/date_period'
     autoload :ScopeRange, 'query_filter/utils/scope_range'
+    autoload :UserConditions, 'query_filter/utils/user_conditions'
   end
 end
