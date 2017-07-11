@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module QueryFilter
   module Utils
     class UserConditions
@@ -34,7 +36,7 @@ module QueryFilter
       private
 
       def invert_lambda(l)
-        -> (*args, &blk) { !l.call(*args, &blk) }
+        ->(*args, &blk) { !l.call(*args, &blk) }
       end
 
       # Filters support:
@@ -47,22 +49,24 @@ module QueryFilter
       def make_lambda(filter)
         case filter
         when Symbol
-          -> (target, _, &blk) { target.send filter, &blk }
+          ->(target, _, &blk) { target.send filter, &blk }
         when ::Proc
-          if filter.arity > 1
-            return lambda do |target, _, &block|
-              raise ArgumentError unless block
-              target.instance_exec(target, block, &filter)
-            end
-          end
-
-          if filter.arity <= 0
-            -> (target, _) { target.instance_exec(&filter) }
-          else
-            -> (target, _) { target.instance_exec(target, &filter) }
-          end
+          make_proc(filter)
         else
           raise ArgumentError
+        end
+      end
+
+      def make_proc(filter)
+        if filter.arity > 1
+          lambda do |target, _, &block|
+            raise ArgumentError unless block
+            target.instance_exec(target, block, &filter)
+          end
+        elsif filter.arity <= 0
+          ->(target, _) { target.instance_exec(&filter) }
+        else
+          ->(target, _) { target.instance_exec(target, &filter) }
         end
       end
     end
