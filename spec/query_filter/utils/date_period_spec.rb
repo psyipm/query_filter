@@ -1,18 +1,22 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe QueryFilter::Utils::DatePeriod do
-  it 'should init default range' do
-    period = described_class.new
+  let(:period) { described_class.new }
 
+  it 'should init default range' do
     expect(period.default?).to eq true
     expect(period.date_from).to eq Time.zone.today.beginning_of_day
     expect(period.date_to).to eq Time.zone.today.end_of_day
   end
 
   it 'should respond to range' do
-    period = described_class.new
-
     expect(period.range.is_a?(Range)).to eq true
+  end
+
+  it 'should respond to title' do
+    expect(period.title).not_to be blank?
   end
 
   it 'should parse dates from string' do

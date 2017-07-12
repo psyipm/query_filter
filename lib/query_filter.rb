@@ -21,4 +21,23 @@ module QueryFilter
     autoload :ScopeRange, 'query_filter/utils/scope_range'
     autoload :UserConditions, 'query_filter/utils/user_conditions'
   end
+
+  # Configurable date period format
+  mattr_accessor :date_period_format
+  self.date_period_format = '%m/%d/%Y'
+
+  # Splitter to parse date period values
+  mattr_accessor :date_period_splitter
+  self.date_period_splitter = 'to'
+
+  # Default way to setup QueryFilter
+  # @example
+  #   QueryFilter.setup do |config|
+  #     config.date_period_format = '%d-%m-%Y'
+  #     config.date_period_splitter = 'until'
+  #   end
+  #
+  def self.setup
+    yield self
+  end
 end

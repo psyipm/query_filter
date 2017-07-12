@@ -173,6 +173,21 @@ class OrderFilter < QueryFilter::Base
 end
 ```
 
+### Configuration
+
+You can set up some options in general
+
+```ruby
+# config/initializers/query_filter.rb
+QueryFilter.setup do |config|
+  # Date period format, by default: %m/%d/%Y
+  config.date_period_format = '%d-%m-%Y'
+
+  # Splitter to parse date period values, by default 'to'
+  config.date_period_splitter = 'until'
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
