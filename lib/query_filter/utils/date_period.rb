@@ -65,15 +65,7 @@ module QueryFilter
       private
 
       def normalize_date(date)
-        return date if date.is_a?(Time) || date.is_a?(DateTime)
-        return Time.zone.today if date.blank?
-
-        begin
-          time = DateTime.strptime(date, @format)
-          Time.zone.parse(time.strftime(TIME_FORMAT))
-        rescue ArgumentError => _e
-          Time.zone.today
-        end
+        QueryFilter::Utils::DateNormalizer.new(date, @format).normalize
       end
     end
   end
