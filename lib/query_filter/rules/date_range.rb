@@ -25,7 +25,7 @@ module QueryFilter::Rules
       if params[key].present?
         QueryFilter::Utils::DatePeriod.parse_from_string(params[key], @options[:format])
       elsif keys_start_end_dates_exists?(params)
-        QueryFilter::Utils::DatePeriod.new(*values_start_end_dates(params))
+        QueryFilter::Utils::DatePeriod.new(*values_start_end_dates(params), @options[:format])
       end
     end
 
