@@ -94,6 +94,23 @@ This gem support next types of filter params:
     orders.created_at BETWEEN '2017-06-24 04:00:00.000000' AND '2017-07-01 03:59:59.999999'
     ```
 
+    When we have date with custom time:
+    ```ruby
+    date_range :range, format: '%m/%d/%Y %H:%M'
+
+    def date_range_range(period)
+      query.where(created_at: period.range)
+    end
+    ```
+
+    `period.range` will ignore time and always return time start_of_day and end_of_day, but the method `period.range_original` will return dates without time modification
+
+    ```ruby
+    def date_range_range(period)
+      query.where(created_at: period.range_original)
+    end
+    ```
+
 * order by
     ```ruby
       order_by :sort_column, via: :sort_mode
