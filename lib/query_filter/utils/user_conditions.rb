@@ -15,8 +15,8 @@ module QueryFilter
 
       def passed?
         return true if empty?
-        value = target.params
 
+        value = target.params
         conditions_lambdas.all? { |c| c.call(target, value) }
       end
 
@@ -35,8 +35,8 @@ module QueryFilter
 
       private
 
-      def invert_lambda(l)
-        ->(*args, &blk) { !l.call(*args, &blk) }
+      def invert_lambda(lblock)
+        ->(*args, &blk) { !lblock.call(*args, &blk) }
       end
 
       # Filters support:
@@ -61,6 +61,7 @@ module QueryFilter
         if filter.arity > 1
           lambda do |target, _, &block|
             raise ArgumentError unless block
+
             target.instance_exec(target, block, &filter)
           end
         elsif filter.arity <= 0

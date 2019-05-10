@@ -29,4 +29,13 @@ RSpec.describe QueryFilter::Utils::DatePeriod do
     to = period.date_to
     expect([to.month, to.day, to.year]).to eq [6, 30, 2017]
   end
+
+  it 'should parse date in format iso8601' do
+    from = 2.days.ago.iso8601
+    to = 1.day.ago.iso8601
+    period = described_class.new(from, to)
+
+    expect(period.date_from_original.iso8601).to eq from
+    expect(period.date_to_original.iso8601).to eq to
+  end
 end

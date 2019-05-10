@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Build select query based on params hash
 #
 module QueryFilter

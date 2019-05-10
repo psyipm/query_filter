@@ -31,6 +31,18 @@ module QueryFilter
   mattr_accessor :date_period_splitter
   self.date_period_splitter = 'to'
 
+  mattr_accessor :date_display_format
+  self.date_display_format = '%Y-%m-%d %H:%M'
+
+  mattr_accessor :datetime_formats
+  self.datetime_formats = %w[
+    %Y-%m-%dT%H:%M:%S.%L%z
+    %Y-%m-%dT%H:%M:%S%z
+    %Y-%m-%d %H:%M:%S
+    %Y-%m-%d %H:%M
+    %Y-%m-%d
+  ]
+
   # Default way to setup QueryFilter
   # @example
   #   QueryFilter.setup do |config|

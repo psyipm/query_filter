@@ -1,44 +1,49 @@
-module QueryFilter::Rules
-  class SplitterRange < Scope
-    class RangeParam
-      SPLITTER = /[;-]/
+# frozen_string_literal: true
 
-      def initialize(value)
-        @value = value
+module QueryFilter
+  module Rules
+    class SplitterRange < Scope
+      class RangeParam
+        SPLITTER = /[;-]/.freeze
+
+        def initialize(value)
+          @value = value
+        end
+
+        def valid?
+          @value.present? && items.size == 2
+        end
+
+        def range
+          ::Range.new(*items)
+        end
+
+        def items
+          @items ||= @value.split(SPLITTER).map(&:strip).map(&:to_i)
+        end
       end
 
-      def valid?
-        @value.present? && items.size == 2
+      def name
+        'splitter_range'
       end
 
-      def range
-        ::Range.new(*items)
+      def valid?(values)
+        period = build_period_from_params(values)
+        !period.nil?
       end
 
-      def items
-        @items ||= @value.split(SPLITTER).map(&:strip).map(&:to_i)
+      def normalize_params(values)
+        build_period_from_params(values)
       end
-    end
 
-    def name
-      'splitter_range'.freeze
-    end
+      protected
 
-    def valid?(values)
-      period = build_period_from_params(values)
-      !period.nil?
-    end
+      def build_period_from_params(values)
+        param = RangeParam.new(values[key])
+        return unless param.valid?
 
-    def normalize_params(values)
-      build_period_from_params(values)
-    end
-
-    protected
-
-    def build_period_from_params(values)
-      param = RangeParam.new(values[key])
-      return unless param.valid?
-      param
+        param
+      end
     end
   end
 end

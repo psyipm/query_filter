@@ -26,6 +26,37 @@ class Order < ActiveRecord::Base
 end
 ```
 
+Where OrderFilter class looks like:
+
+```ruby
+# app/filters/order_filter.rb
+#
+class OrderFilter < QueryFilter::Base
+  scope :customer_id
+  scope :service
+
+  range :total
+
+  date_range :completed_at
+
+  def scope_customer_id(value)
+    query.where(customer_id: value)
+  end
+
+  def scope_service(value)
+    query.where(service_id: value.to_i)
+  end
+
+  def range_total(range)
+    query.where(range.query('orders.total'))
+  end
+
+  def date_range_completed_at(period)
+    query.where(completed_at: period.range_original)
+  end
+end
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:

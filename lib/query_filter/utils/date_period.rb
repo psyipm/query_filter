@@ -3,14 +3,12 @@
 module QueryFilter
   module Utils
     class DatePeriod
-      attr_reader :date_from_raw, :date_to_raw, :format
-
-      TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+      attr_reader :date_from_raw, :date_to_raw
 
       def initialize(date_from = nil, date_to = nil, format = nil)
-        @format = (format.blank? ? QueryFilter.date_period_format : format)
         @date_from_raw = date_from
         @date_to_raw = date_to
+        @format = format
       end
 
       def range
@@ -42,11 +40,11 @@ module QueryFilter
       end
 
       def datefrom
-        @datefrom ||= I18n.l(date_from, format: @format)
+        @datefrom ||= I18n.l(date_from, format: date_display_format)
       end
 
       def dateto
-        @dateto ||= I18n.l(date_to, format: @format)
+        @dateto ||= I18n.l(date_to, format: date_display_format)
       end
 
       def to_param
@@ -72,14 +70,18 @@ module QueryFilter
         return value if value.is_a?(DatePeriod)
 
         if value.blank?
-          new(nil, nil, format)
+          new
         else
           dates = value.to_s.split(QueryFilter.date_period_splitter).map(&:strip)
-          new(dates[0], dates[1], format)
+          new(dates[0], dates[1], format || QueryFilter.date_period_format)
         end
       end
 
       private
+
+      def date_display_format
+        @format || QueryFilter.date_display_format
+      end
 
       def normalize_date(date)
         QueryFilter::Utils::DateNormalizer.new(date, @format).normalize
