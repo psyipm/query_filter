@@ -31,6 +31,6 @@ RSpec.describe QueryFilter::Utils::DateNormalizer do
     expect(normalize(date.strftime(format)).to_date).to eq date.to_date
 
     date1 = 1999.years.ago
-    expect(normalize(date1.strftime(format)).to_date).to eq date1.to_date
+    expect(normalize(date1.strftime(format))).to eq date1.strftime(format)
   end
 end

@@ -35,6 +35,7 @@ module QueryFilter
 
       def parse
         return date if date?
+        return default_date if date.blank?
 
         [@format].concat(QueryFilter.datetime_formats).compact.each do |format|
           value = safe_parse_date(date, format)
