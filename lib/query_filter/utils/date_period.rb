@@ -3,14 +3,12 @@
 module QueryFilter
   module Utils
     class DatePeriod
-      attr_reader :date_from_raw, :date_to_raw, :format
-
-      TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+      attr_reader :date_from_raw, :date_to_raw
 
       def initialize(date_from = nil, date_to = nil, format = nil)
-        @format = (format.blank? ? QueryFilter.date_period_format : format)
         @date_from_raw = date_from
         @date_to_raw = date_to
+        @format = format
       end
 
       def range
@@ -42,11 +40,11 @@ module QueryFilter
       end
 
       def datefrom
-        @datefrom ||= I18n.l(date_from, format: @format)
+        @datefrom ||= I18n.l(date_from, format: date_display_format)
       end
 
       def dateto
-        @dateto ||= I18n.l(date_to, format: @format)
+        @dateto ||= I18n.l(date_to, format: date_display_format)
       end
 
       def to_param
@@ -72,25 +70,35 @@ module QueryFilter
         return value if value.is_a?(DatePeriod)
 
         if value.blank?
-          new(nil, nil, format)
+          new
         else
           dates = value.to_s.split(QueryFilter.date_period_splitter).map(&:strip)
-          new(dates[0], dates[1], format)
+          new(dates[0], dates[1], format || QueryFilter.date_period_format)
         end
       end
 
       private
 
+      def date_display_format
+        @format || QueryFilter.date_display_format
+      end
+
       def normalize_date(date)
         return date if date.is_a?(Time) || date.is_a?(DateTime)
         return Time.zone.today if date.blank?
 
-        begin
-          time = DateTime.strptime(date, @format)
-          Time.zone.parse(time.strftime(TIME_FORMAT))
-        rescue ArgumentError => _e
-          Time.zone.today
+        [@format].concat(QueryFilter.datetime_formats).compact.each do |format|
+          value = safe_parse_date(date, format)
+          return value if value
         end
+
+        Time.zone.today
+      end
+
+      def safe_parse_date(string, format)
+        DateTime.strptime(string, format)
+      rescue ArgumentError => _e
+        nil
       end
     end
   end

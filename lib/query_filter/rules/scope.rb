@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Define filter rules
 #
 module QueryFilter
@@ -33,7 +35,7 @@ module QueryFilter
       end
 
       def name
-        'scope'.freeze
+        'scope'
       end
 
       def key
