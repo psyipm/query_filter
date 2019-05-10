@@ -84,21 +84,7 @@ module QueryFilter
       end
 
       def normalize_date(date)
-        return date if date.is_a?(Time) || date.is_a?(DateTime)
-        return Time.zone.today if date.blank?
-
-        [@format].concat(QueryFilter.datetime_formats).compact.each do |format|
-          value = safe_parse_date(date, format)
-          return value if value
-        end
-
-        Time.zone.today
-      end
-
-      def safe_parse_date(string, format)
-        DateTime.strptime(string, format)
-      rescue ArgumentError => _e
-        nil
+        QueryFilter::Utils::DateNormalizer.new(date, @format).normalize
       end
     end
   end
