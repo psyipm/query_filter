@@ -236,6 +236,62 @@ QueryFilter.setup do |config|
 end
 ```
 
+## Testing
+
+query_filter gem defines some custom RSpec matchers. Include them to your project:
+
+```ruby
+# spec/support/query_filter.rb
+
+require "query_filter/rspec_matchers"
+
+RSpec.configure do |config|
+  config.include QueryFilter::RSpecMatchers, type: :query_filter
+end
+```
+
+Custom matchers will be available to use in specs:
+
+```ruby
+# spec/filters/order_filter_spec.rb
+
+describe OrderFilter, type: :query_filter do
+  context "scope deleted" do
+    it "performs query" do
+      expect { filter(deleted: true) }.to perform_query(deleted: true)
+    end
+
+    it "doesn't perform query with wrong params" do
+      expect { filter(deleted: "invalid_param") }.to_not perform_query
+    end
+  end
+
+  it "performs query by state" do
+    expect(relation).to receive(:with_state).with(:pending)
+    filter(state: :pending)
+  end
+
+  it "reorders by sort_column" do
+    expect { filter(sort_column: :id, sort_mode: :desc) }
+      .to reorder.by("orders.id DESC NULLS LAST")
+  end
+
+  context "query against the database" do
+    let(:order) { create(:order, state: :pending) }
+
+    # relation is a double by default, but can be redefined to an actual ActiveRecord::Relation:
+    before do
+      relation Order.all
+    end
+
+    it "finds the order" do
+      expect(filter(state: :pending)).to contain_exactly(order)
+      expect(filter(state: :invalid_state)).to be_empty
+    end
+  end
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
