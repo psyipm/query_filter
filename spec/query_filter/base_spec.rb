@@ -34,7 +34,7 @@ RSpec.describe QueryFilter::Base do
 
   it 'should build range filter' do
     params = { login_count_from: 4, login_count_to: 14 }
-    expect(query(params)).to match(/login_count BETWEEN [\d]+ AND [\d+]/)
+    expect(query(params)).to match(/login_count BETWEEN [0-9]*\.?[0-9]+ AND [0-9]*\.?[0-9]+/)
   end
 
   it 'should build range filter with \'from\' param' do
