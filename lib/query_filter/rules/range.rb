@@ -7,8 +7,7 @@ module QueryFilter
     class Range < Scope
       def initialize(keys, options = {})
         @key = Array(keys).first
-        @keys = [key_from, key_to]
-        @options = options
+        super([key_from, key_to], options)
       end
 
       def name
