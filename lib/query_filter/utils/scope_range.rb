@@ -35,11 +35,11 @@ module QueryFilter
 
       def query(column)
         if value_from.present? && value_to.present?
-          ["#{column} BETWEEN ? AND ?", value_from, value_to]
+          ["#{column} BETWEEN ? AND ?", value_from.to_f, value_to.to_f]
         elsif value_from.present?
-          ["#{column} >= ?", value_from]
+          ["#{column} >= ?", value_from.to_f]
         elsif value_to.present?
-          ["#{column} <= ?", value_to]
+          ["#{column} <= ?", value_to.to_f]
         end
       end
     end
